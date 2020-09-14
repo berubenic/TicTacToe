@@ -1,4 +1,5 @@
-# game_master.rb
-require_relative 'game_master'
+# frozen_string_literal: true
 
-GameMaster.new
+# game_master.rb
+require_relative 'board'
+Board.new
