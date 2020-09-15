@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Gives players instructions and starts the game
 class GameMaster
   def initialize
     puts 'Do you want to play a game of Tic Tac Toe? (Yes or No) :)'
