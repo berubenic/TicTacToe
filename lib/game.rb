@@ -1,3 +1,4 @@
+require 'pry'
 # frozen_string_literal: true
 
 # Create board and check winner
@@ -43,36 +44,90 @@ class Game
   def symbol_placement(player_move, player_symbol)
     case player_move
     when 'row1 col1'
-      check_valid
-      @row1[0] = player_symbol
+      if @row1[0] == ' '
+        @row1[0] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     when 'row1 col2'
-      check_valid
-      @row1[1] = player_symbol
+      if @row1[1] == ' '
+        @row1[1] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     when 'row1 col3'
-      check_valid
-      @row1[2] = player_symbol
+      if @row1[2] == ' '
+        @row1[2] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     when 'row2 col1'
-      check_valid
-      @row2[0] = player_symbol
+      if @row2[0] == ' '
+        @row2[0] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     when 'row2 col2'
-      check_valid
-      @row2[1] = player_symbol
+      if @row2[1] == ' '
+        @row2[1] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     when 'row2 col3'
-      check_valid
-      @row2[2] = player_symbol
+      if @row[2] == ' '
+        @row[2] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     when 'row3 col1'
-      check_valid
-      @row3[0] = player_symbol
+      if @row3[0] == ' '
+        @row3[0] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     when 'row3 col2'
-      check_valid
-      @row3[1] = player_symbol
+      if @row3[1] == ' '
+        @row3[1] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     when 'row3 col3'
-      check_valid
-      @row3[2] = player_symbol
+      if @row3[2] == ' '
+        @row3[2] = player_symbol
+        verify_if_win
+      else invalid_turn
+      end
     else
-      puts 'Invalid play, try again!'
-      @player1 = !(@player1 == true)
-      play_turn
+      invalid_turn
     end
+  end
+
+  def invalid_turn
+    puts 'Invalid play, try again!'
+    @player1 = !(@player1 == true)
+    play_turn
+  end
+
+  def verify_if_win
+    if all_equal?(@row1) == true
+      puts "\nYou Win!!!\n"
+    elsif all_equal?(@row2) == true
+      puts "\nYou Win!!!\n"
+    elsif all_equal?(@row3) == true
+      puts "\nYou Win!!!\n"
+    # elsif (@row1[0] == @row2[0]) && (@row2[0] == @row3[0])
+    #   puts "\nYou Win!!!\n"
+    # elsif @row1[1] == @row2[1] && @row2[1] == @row3[1]
+    #   puts "\nYou Win!!!\n"
+    else
+      display_board
+    end
+  end
+
+  def all_equal?(arr)
+    (0..(arr.size - 2)).each do |i|
+      return false if arr[i] != arr[i + 1]
+    end
+    true
   end
 end
