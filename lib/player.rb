@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Chooses player symbol and keeps track of their turns
 class Player
   def initialize
     puts "Player 1, do you want \"X\" or \"O\"?\nEnter \"X\" or \"O\"."
