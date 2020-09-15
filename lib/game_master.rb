@@ -9,8 +9,7 @@ class GameMaster
       explain_rules
     elsif play_a_game == 'No'
       puts 'Bye!'
-    else
-      initialize
+    else initialize
     end
   end
 
@@ -19,7 +18,7 @@ class GameMaster
     puts 'Do you understand? (Yes or No)'
     understand_rules = gets.chomp
     if understand_rules == 'Yes'
-      Board.new
+      Player.new
     else explain_rules
     end
   end
