@@ -1,8 +1,10 @@
-require 'pry'
+require_relative 'verify_win'
 # frozen_string_literal: true
 
 # Create board and check winner
 class Game
+  include VerifyWin
+
   def initialize(row1, row2, row3, player1_symbol, player2_symbol)
     @row1 = row1
     @row2 = row2
@@ -75,8 +77,8 @@ class Game
       else invalid_turn
       end
     when 'row2 col3'
-      if @row[2] == ' '
-        @row[2] = player_symbol
+      if @row2[2] == ' '
+        @row2[2] = player_symbol
         verify_if_win
       else invalid_turn
       end
@@ -116,8 +118,19 @@ class Game
       announce_winner
     elsif row_equal?(@row3)
       announce_winner
-    else
-      display_board
+    elsif col_or_diag_equal?(@row1[0], @row2[0], @row3[0])
+      announce_winner
+    elsif col_or_diag_equal?(@row1[1], @row2[1], @row3[1])
+      announce_winner
+    elsif col_or_diag_equal?(@row1[2], @row2[2], @row3[2])
+      announce_winner
+    elsif col_or_diag_equal?(@row1[0], @row2[1], @row3[2])
+      announce_winner
+    elsif col_or_diag_equal?(@row1[2], @row2[1], @row3[0])
+      announce_winner
+    elsif no_winner?(@row1, @row2, @row3)
+      announce_no_winner
+    else display_board
     end
   end
 
@@ -125,20 +138,16 @@ class Game
     @winner = true
     if @player1 == true
       puts 'Player 2 wins!'
-      display_board
     else
       puts 'Player 1 wins!'
-      display_board
     end
+    display_board
+    exit
   end
 
-  def row_equal?(arr)
-    arr.each do |x|
-      return false if x == ' '
-    end
-    (0..(arr.size - 2)).each do |i|
-      return false if arr[i] != arr[i + 1]
-    end
-    true
+  def announce_no_winner
+    puts "It's a tie"
+    display_board
+    exit
   end
 end
