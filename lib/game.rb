@@ -10,6 +10,7 @@ class Game
     @player1_symbol = player1_symbol
     @player2_symbol = player2_symbol
     @player1 = true
+    @winner = false
     create_board
   end
 
@@ -24,7 +25,7 @@ class Game
     p @row1
     p @row2
     p @row3
-    play_turn
+    play_turn if @winner == false
   end
 
   def play_turn
@@ -109,22 +110,32 @@ class Game
   end
 
   def verify_if_win
-    if all_equal?(@row1) == true
-      puts "\nYou Win!!!\n"
-    elsif all_equal?(@row2) == true
-      puts "\nYou Win!!!\n"
-    elsif all_equal?(@row3) == true
-      puts "\nYou Win!!!\n"
-    # elsif (@row1[0] == @row2[0]) && (@row2[0] == @row3[0])
-    #   puts "\nYou Win!!!\n"
-    # elsif @row1[1] == @row2[1] && @row2[1] == @row3[1]
-    #   puts "\nYou Win!!!\n"
+    if row_equal?(@row1)
+      announce_winner
+    elsif row_equal?(@row2)
+      announce_winner
+    elsif row_equal?(@row3)
+      announce_winner
     else
       display_board
     end
   end
 
-  def all_equal?(arr)
+  def announce_winner
+    @winner = true
+    if @player1 == true
+      puts 'Player 2 wins!'
+      display_board
+    else
+      puts 'Player 1 wins!'
+      display_board
+    end
+  end
+
+  def row_equal?(arr)
+    arr.each do |x|
+      return false if x == ' '
+    end
     (0..(arr.size - 2)).each do |i|
       return false if arr[i] != arr[i + 1]
     end
