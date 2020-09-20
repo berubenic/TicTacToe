@@ -1,3 +1,6 @@
+# frozen_string_literal: true
+
+# Checks if turn is a win
 module VerifyWin
   def row_equal?(arr)
     arr.each do |x|

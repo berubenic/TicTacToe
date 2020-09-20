@@ -1,6 +1,6 @@
-require_relative 'verify_win'
 # frozen_string_literal: true
 
+require_relative 'verify_win'
 # Create board and check winner
 class Game
   include VerifyWin
@@ -9,9 +9,11 @@ class Game
     @row1 = row1
     @row2 = row2
     @row3 = row3
+    @player_symbol = nil
     @player1_symbol = player1_symbol
     @player2_symbol = player2_symbol
     @player1 = true
+    @player_move = nil
     @winner = false
     create_board
   end
@@ -31,77 +33,76 @@ class Game
   end
 
   def play_turn
+    input_player_turn
+    switch_player_turn
+    assign_player_symbol
+    find_index_from_turn
+    which_row_to_verify
+  end
+
+  def assign_player_symbol
+    @player_symbol = if @player1 == true
+                       @player2_symbol
+                     else
+                       @player1_symbol
+                     end
+  end
+
+  def input_player_turn
+    puts "#{player}, where do you want to play?"
+    @player_move = gets.chomp
+  end
+
+  def switch_player_turn
+    @player1 = !(@player1 == true)
+  end
+
+  def player
     if @player1 == true
-      puts 'Player 1, where do you want to play?'
-      player_move = gets.chomp
-      @player1 = false
-      symbol_placement(player_move, @player1_symbol)
+      'Player 1'
     else
-      puts 'Player 2, where do you want to play?'
-      player_move = gets.chomp
-      @player1 = true
-      symbol_placement(player_move, @player2_symbol)
+      'Player 2'
     end
   end
 
-  def symbol_placement(player_move, player_symbol)
-    case player_move
-    when 'row1 col1'
-      if @row1[0] == ' '
-        @row1[0] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
-    when 'row1 col2'
-      if @row1[1] == ' '
-        @row1[1] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
-    when 'row1 col3'
-      if @row1[2] == ' '
-        @row1[2] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
-    when 'row2 col1'
-      if @row2[0] == ' '
-        @row2[0] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
-    when 'row2 col2'
-      if @row2[1] == ' '
-        @row2[1] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
-    when 'row2 col3'
-      if @row2[2] == ' '
-        @row2[2] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
-    when 'row3 col1'
-      if @row3[0] == ' '
-        @row3[0] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
-    when 'row3 col2'
-      if @row3[1] == ' '
-        @row3[1] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
-    when 'row3 col3'
-      if @row3[2] == ' '
-        @row3[2] = player_symbol
-        verify_if_win
-      else invalid_turn
-      end
+  def find_index_from_turn
+    @index = @player_move[-1].to_i - 1
+  end
+
+  def which_row_to_verify
+    arr = @player_move.split
+    if arr[0] == 'row1'
+      verify_row1
+    elsif arr[0] == 'row2'
+      verify_row2
+    elsif arr[0] == 'row3'
+      verify_row3
     else
       invalid_turn
+    end
+  end
+
+  def verify_row1
+    if @row1[@index] == ' '
+      @row1[@index] = @player_symbol
+      verify_if_win
+    else invalid_turn
+    end
+  end
+
+  def verify_row2
+    if @row2[@index] == ' '
+      @row2[@index] = @player_symbol
+      verify_if_win
+    else invalid_turn
+    end
+  end
+
+  def verify_row3
+    if @row3[@index] == ' '
+      @row3[@index] = @player_symbol
+      verify_if_win
+    else invalid_turn
     end
   end
 
@@ -136,13 +137,17 @@ class Game
 
   def announce_winner
     @winner = true
-    if @player1 == true
-      puts 'Player 2 wins!'
-    else
-      puts 'Player 1 wins!'
-    end
+    puts player_winner.to_s
     display_board
     exit
+  end
+
+  def player_winner
+    if @player1 == true
+      'Player 2 wins'
+    else
+      'Player 1 wins'
+    end
   end
 
   def announce_no_winner
