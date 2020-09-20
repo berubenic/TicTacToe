@@ -85,7 +85,7 @@ class Game
   def verify_row1
     if @row1[@index] == ' '
       @row1[@index] = @player_symbol
-      verify_if_win
+      win_row1
     else invalid_turn
     end
   end
@@ -93,7 +93,7 @@ class Game
   def verify_row2
     if @row2[@index] == ' '
       @row2[@index] = @player_symbol
-      verify_if_win
+      win_row1
     else invalid_turn
     end
   end
@@ -101,7 +101,7 @@ class Game
   def verify_row3
     if @row3[@index] == ' '
       @row3[@index] = @player_symbol
-      verify_if_win
+      win_row1
     else invalid_turn
     end
   end
@@ -112,24 +112,64 @@ class Game
     play_turn
   end
 
-  def verify_if_win
+  def win_row1
     if row_equal?(@row1)
       announce_winner
-    elsif row_equal?(@row2)
+    else win_row2
+    end
+  end
+
+  def win_row2
+    if row_equal?(@row2)
       announce_winner
-    elsif row_equal?(@row3)
+    else win_row3
+    end
+  end
+
+  def win_row3
+    if row_equal?(@row3)
       announce_winner
-    elsif col_or_diag_equal?(@row1[0], @row2[0], @row3[0])
+    else win_col1
+    end
+  end
+
+  def win_col1
+    if col_or_diag_equal?(@row1[0], @row2[0], @row3[0])
       announce_winner
-    elsif col_or_diag_equal?(@row1[1], @row2[1], @row3[1])
+    else win_col2
+    end
+  end
+
+  def win_col2
+    if col_or_diag_equal?(@row1[1], @row2[1], @row3[1])
       announce_winner
-    elsif col_or_diag_equal?(@row1[2], @row2[2], @row3[2])
+    else win_col3
+    end
+  end
+
+  def win_col3
+    if col_or_diag_equal?(@row1[2], @row2[2], @row3[2])
       announce_winner
-    elsif col_or_diag_equal?(@row1[0], @row2[1], @row3[2])
+    else win_diag1
+    end
+  end
+
+  def win_diag1
+    if col_or_diag_equal?(@row1[0], @row2[1], @row3[2])
       announce_winner
-    elsif col_or_diag_equal?(@row1[2], @row2[1], @row3[0])
+    else win_diag2
+    end
+  end
+
+  def win_diag2
+    if col_or_diag_equal?(@row1[2], @row2[1], @row3[0])
       announce_winner
-    elsif no_winner?(@row1, @row2, @row3)
+    else it_a_tie
+    end
+  end
+
+  def it_a_tie
+    if no_winner?(@row1, @row2, @row3)
       announce_no_winner
     else display_board
     end
