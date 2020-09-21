@@ -2,9 +2,7 @@
 
 # Gives players instructions and starts the game
 class GameMaster
-  def initialize
-    ask_start_game
-  end
+  def initialize; end
 
   def ask_start_game
     puts 'Do you want to play a game of Tic Tac Toe? (Yes or No) :)'
@@ -30,9 +28,6 @@ class GameMaster
   def understand_rules
     puts 'Do you understand? (Yes or No)'
     understand_rules = gets.chomp
-    if understand_rules == 'Yes'
-      Player.new
-    else explain_rules
-    end
+    explain_rules if understand_rules != 'Yes'
   end
 end
