@@ -4,11 +4,11 @@ require_relative 'verify_win'
 # Create board and check winner
 class Game
   include VerifyWin
-
-  def initialize(row1, row2, row3, player1_symbol, player2_symbol)
-    @row1 = row1
-    @row2 = row2
-    @row3 = row3
+  attr_reader :player1_symbol, :player2_symbol
+  def initialize(player1_symbol, player2_symbol)
+    @row1 = []
+    @row2 = []
+    @row3 = []
     @player_symbol = nil
     @player1_symbol = player1_symbol
     @player2_symbol = player2_symbol
